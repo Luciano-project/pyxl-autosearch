@@ -17,7 +17,7 @@ class OpenxlFiles():
             self.wb_file = load_workbook(filename=filepath, data_only=data_only) #keep_vba=True for Macros
             logger.info(msg=f"File opened: {filepath}")
             self.filepath = filepath
-            return 0
+            return 1
 
         except Exception as e:
             logger.error(msg=f"{e} at OpenxlFiles.open_file()")
@@ -31,9 +31,9 @@ class OpenxlFiles():
             self.wb_file.save(filename=filename)
             logger.info(msg=f"File saved: {filename}")
 
-            return 0
+            return 1
         except Exception as e:
-            logger.warning(msg=f"{e} at OpenxlFiles.save_file();")
+            logger.error(msg=f"{e} at OpenxlFiles.save_file()")
             return -1
 
     def get_wb_sheet(self): return self.wb_sheet
@@ -42,8 +42,8 @@ class OpenxlFiles():
     def get_filepath(self): return self.filepath
     def set_filepath(self, path): self.filepath = path
 
-    def update_data(self, coodenate, value): self.wb_sheet[coodenate] = value
-    def get_data(self, coodenate): return self.wb_sheet[coodenate].value
+    def update_value(self, coodenate, value): self.wb_sheet[coodenate].value = value
+    def get_value(self, coodenate): return self.wb_sheet[coodenate].value
 
 
 if __name__ == "__main__":
