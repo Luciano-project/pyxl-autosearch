@@ -1,18 +1,15 @@
-
 #from configs.config import Setup
 import sys, os, re
 
 # Adiciona o diretório pai ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from configs.config import Setup
-from middlewares.openxl_files import OpenxlFiles
 
 
 class SearchFile(Setup):
     def __init__(self, files = [{"namefile":"2409999", "coordenate":"C1", "value":""}, {"namefile":"2409999", "coordenate":"C1", "value":"Olá mundo"}]):
         super().__init__()
         self.files = files
-        self.openxl_files = OpenxlFiles
 
     def search(self):
         '''Search files in path'''
@@ -27,25 +24,20 @@ class SearchFile(Setup):
         '''
         Check if file is in search list (in_search)
         '''
-        for count, item in enumerate(in_search):
+        for index_list, item in enumerate(in_search):
             if self.search_in(item['namefile'], name_file) and self.ignored_files_str(path)!=1:
-                self.proc_load_list(path, name_file, count)
+                self.proc_load_list(path, name_file, index_list)
+                self.remove_found(index_list)
                 self.check_path(name_file, path, in_search)
 
-
-    def proc_load_list(self, path, name, count, method:str):
+    def proc_load_list(self, path, name_file, index_list):
         """
         Here is where decision to processing the file is made, read or write. By using the parameter method: write, read.
+        ~ This function will be overrided in the child class from views.
         """
-        if method == "write": self.write_file(path, name)
-        elif method == "read": self.read_file(path, name)
-        method(path, name, count)
+        pass
         
-        if self.process_xl(path, self.files[count]["coordenate"], self.files[count]["value"]): pass
-            #self.save_file_status(path, self.files[count][1], self.files[count][0])       
-        self.remove_found(count)
-
-    def remove_found(self, count): self.files.pop(count)  
+    def remove_found(self, index_list): self.files.pop(index_list)  
 
     def search_in(self, file_name:str, haystack:str) -> int:
         '''Search if file_name is in haystack'''
@@ -68,13 +60,6 @@ class SearchFile(Setup):
             if needle == item:
                 return 1
         return 0
-
-    def save_file_status(self, path, of, nbr, e = ""):
-        #self.status_file.append({"of" : f"{of}", "peca" : f"{nbr}", "caminho" : f"{path}","log":f"{e}"})
-        if e!="":
-            #conec.add_record(of, nbr, path, str(e))
-            #self.connection_on=1
-            pass
 
 if __name__ == "__main__":
     search = SearchFile()
