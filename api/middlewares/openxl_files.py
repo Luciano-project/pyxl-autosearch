@@ -1,4 +1,3 @@
-from middlewares.json_bridge import ConfigSearchDefinitions
 from openpyxl import load_workbook
 
 import logging
