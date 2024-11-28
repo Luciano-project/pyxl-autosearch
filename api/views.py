@@ -37,10 +37,17 @@ class WriteFile(base.SearchFile):
         xl_file.set_wb_sheet(sheetname)
         old_value = xl_file.get_value(self.files[index_list]["coordinate"])
         xl_file.update_value(self.files[index_list]["coordinate"], self.files[index_list]["value"])
-        self.insert_data_response({"old_value": old_value, "value": self.files[index_list]["value"], "path":path})
-        xl_file.save_file(path)
-        xl_file.close_file()
-        return 1
+        try:
+            self.insert_data_response({"old_value": old_value, "coodinate":self.files[index_list]["coordinate"], "value": self.files[index_list]["value"], "path":path})
+            xl_file.save_file(path)
+            xl_file.close_file()
+            return 1
+        
+        except Exception as e:
+            self.insert_data_response({"old_value": old_value, "coodinate": self.files[index_list]["coordinate"], "value": "", "path": path, "error": e})
+            return 0
+
+        
 
 def write_file(files:list[dict]):
     file = WriteFile(files)
