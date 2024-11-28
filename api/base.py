@@ -1,7 +1,11 @@
 #from configs.config import Setup
 from configs.settings import Setup
+from configs.logging import setup_logging 
 import logging
 import sys, os, re
+
+setup_logging()
+
 
 # Adiciona o diretório pai ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -59,6 +63,7 @@ class SearchFile(Setup):
                                 "path": "Not found",
                                 "error": "Not found",
                                 })
+            logger.error(f"File not found: {item['filename']} from the request:{item}")
         return 0
 
     def insert_data_response(self, values:dict):
