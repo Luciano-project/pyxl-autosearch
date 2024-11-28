@@ -35,7 +35,6 @@ class OpenxlFiles():
     def close_file(self):
         try:
             self.wb_file.close()
-            logger.info(f"File closed: {self.filepath}")
             self.wb_file = None
             return 1
 

@@ -65,6 +65,11 @@ class SearchFile(Setup):
                                 })
             logger.error(f"File not found: {item['filename']} from the request:{item}")
         return 0
+    
+    def handle_invalid_ref(self, requested_item):
+        self.insert_data_response({"error": f"Invalid reference: {requested_item['coordinate']}", **requested_item})
+        logger.error(f"Invalid reference: {requested_item}")
+        return 1
 
     def insert_data_response(self, values:dict):
         '''insert data to the respose list'''
