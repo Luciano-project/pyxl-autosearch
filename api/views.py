@@ -1,5 +1,5 @@
 from . import base
-from middlewares.openxl_files import OpenxlFiles
+from .middlewares.openxl_files import OpenxlFiles
 
 
 class ReadFile(base.SearchFile):
