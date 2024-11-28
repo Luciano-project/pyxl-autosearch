@@ -1,12 +1,15 @@
 import os
+from dotenv import load_dotenv
 #import mysql.connector
-DEBUG = True
 
+load_dotenv("../.env")
+
+DEBUG = os.getenv("DEBUG")
 
 class Setup:
     def __init__(self):
-        self.path = rf"C:\Users\lucia\Projects\python\tests" #Path de procura
+        self.path = os.getenv("SEARCH_PATH")
         self.base_str_find = [] # STRINGS MUST BE INCLUDED IN NAME FILE
         self.ignored_str = []
         self.default_sheetname = "test"
-        self.default_savepath = rf"C:\Users\lucia\Projects\python\tests"
+        self.default_savepath = os.getenv("DEFAULT_SAVEPATH")
