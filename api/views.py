@@ -25,6 +25,7 @@ class WriteFile(base.SearchFile):
         xl_file.open_file(path)
         xl_file.set_wb_sheet(sheetname)
         xl_file.update_data(self.files[index_list]["coordenate"], self.files[index_list]["value"])
+        xl_file.close_file()
         xl_file.save_file(path)
 
 def update_file(files:list[dict]):

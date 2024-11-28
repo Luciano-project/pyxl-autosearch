@@ -32,6 +32,18 @@ class OpenxlFiles():
             logger.error(msg=f"{e} at OpenxlFiles.save_file()")
             return -1
 
+    def close_file(self):
+        try:
+            self.wb_file.close()
+            logger.info(f"File closed: {self.filepath}")
+            self.wb_file = None
+            return 1
+
+        except Exception as e:
+            logger.error(f"{e} at OpenxlFiles.close_file")
+            self.wb_file = None
+            return -1
+
     def get_wb_sheet(self): return self.wb_sheet
     def set_wb_sheet(self, sheet_name): self.wb_sheet = self.wb_file[sheet_name]
 
