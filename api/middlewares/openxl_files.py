@@ -8,7 +8,6 @@ class OpenxlFiles():
     def __init__(self, filepath=None):
         self.wb_file = None
         self.wb_sheet = None
-        self.extension = filepath.split(".")[-1] if filepath else None
         self.filepath = filepath
 
     def open_file(self, filepath, data_only=False):
@@ -23,14 +22,12 @@ class OpenxlFiles():
             return -1
 
     def save_file(self, filepath_save, extension=None):
-        if extension is None:
-            extension = self.extension
-        filename = f"{filepath_save}.{extension}"
+        filename = f"{filepath_save}"
         try:
             self.wb_file.save(filename=filename)
             logger.info(msg=f"File saved: {filename}")
-
             return 1
+
         except Exception as e:
             logger.error(msg=f"{e} at OpenxlFiles.save_file()")
             return -1
