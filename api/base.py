@@ -57,11 +57,11 @@ class SearchFile(Setup):
     def handle_not_found(self):
         '''Handle files not found'''
         for item in self.files:
-            self.insert_data_response({"filename": item["filename"],
+            self.insert_data_response({
                                 "coordinate": item["coordinate"],
                                 "value": item["value"] if "value" in item else "Not found",
                                 "path": "Not found",
-                                "error": "Not found",
+                                "error": "Filename: "+item["filename"]+" not found",
                                 })
             logger.error(f"File not found: {item['filename']} from the request:{item}")
         return 0
