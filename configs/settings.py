@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv("../.env")
 
-DEBUG = os.getenv("DEBUG")
-
 class Setup:
     def __init__(self):
         self.path = os.getenv("SEARCH_PATH")
