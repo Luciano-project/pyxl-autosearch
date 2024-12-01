@@ -92,17 +92,17 @@ class SearchFile(Setup):
     
     def check_merged_cell(self, coordinate:str, ws_obj:object) -> int | str:
         '''Check if cell is merged and return the first cell of the merged cell'''
+        from openpyxl.worksheet.cell_range import CellRange
         try:
-            for i in ws_obj.merged_cells:
-                merged_splited = str(i).split(":")
-                for cell in merged_splited:
-                    if coordinate == cell: return merged_splited[0]
+            for merged_range in ws_obj.merged_cells.ranges:
+                if coordinate in CellRange(str(merged_range)):
+                    return str(merged_range).split(":")[0]  
             return 0
 
         except Exception as e:
             logger.error(f"Error checking merged cell: {e}")
             return 0
-    
+
     def check_file_is_opened(self, file_path:str) -> int:
         '''Check if file is opened'''
         try:
