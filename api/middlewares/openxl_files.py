@@ -12,7 +12,7 @@ class OpenxlFiles():
 
     def open_file(self, filepath, data_only=False):
         try:
-            self.wb_file = load_workbook(filename=filepath, data_only=data_only) #keep_vba=True for Macros
+            self.wb_file = load_workbook(filename=filepath, data_only=data_only, keep_links=True) #keep_vba=True for Macros
             logger.info(msg=f"File opened: {filepath}")
             self.filepath = filepath
             return 1
