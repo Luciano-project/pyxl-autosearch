@@ -15,16 +15,22 @@ class ReadFile(base.SearchFile):
         self.sheetname = self.default_sheetname if sheetname == None else sheetname
         xl_file.open_file(path, data_only=True)
         xl_file.set_wb_sheet(sheetname)
+
         check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
         try:
-            value = xl_file.get_value(self.files[index_list]["coordinate"])
+            value = xl_file.get_value(self.files[index_list]["coordinate"]) if check_merged == 0 else xl_file.get_value(check_merged)
             self.insert_data_response({"coordinate":self.files[index_list]["coordinate"],
                                            "value": value,
                                            "path": path,
                                            "error": "" if check_merged == 0 else \
                                                 f"It is a warning, the cell is merged and the value is from the first cell of the merged cell: {check_merged}"})
+            xl_file.close_file()
+            return 1
+
         except Exception as e:
             self.insert_data_response({"value": "", "path":path, "coordinate": self.files[index_list]["coordinate"], "error": e})
+            xl_file.close_file()
+            return 0
 
 class WriteFile(base.SearchFile):
     def __init__(self, files):
@@ -72,8 +78,7 @@ class WriteFile(base.SearchFile):
                                         "path":path,
                                         "coordinate": self.files[index_list]["coordinate"],
                                         "error": e})
-            return 0
-        
+            return 0    
 
 def write_file(files:list[dict]):
     file = WriteFile(files)
