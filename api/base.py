@@ -75,6 +75,34 @@ class SearchFile(Setup):
         '''insert data to the respose list'''
         self.return_values.append(values)
 
+    def check_extension(self, file_name:str) -> int:
+        '''Check if file has a valid extension'''
+        for ext in self.extensions:
+            if file_name.endswith(ext): return 1
+        return 0
+    
+    def check_merged_cell(self, coordinate:str, ws_obj:object) -> int | str:
+        '''Check if cell is merged and return the first cell of the merged cell'''
+        try:
+            for i in ws_obj.merged_cells:
+                merged_splited = str(i).split(":")
+                for cell in merged_splited:
+                    if coordinate == cell: return merged_splited[0]
+            return 0
+
+        except Exception as e:
+            logger.error(f"Error checking merged cell: {e}")
+            return 0
+    
+    def check_file_is_opened(self, file_path:str) -> int:
+        '''Check if file is opened'''
+        try:
+            with open(file_path, 'a'):
+                pass
+            return 0  # O arquivo não está bloqueado
+        except PermissionError:
+            return 1
+
 #IGNORED ITENS METHODS
     def ignored_files_str(self, haystack):
         for item in self.ignored_str:
