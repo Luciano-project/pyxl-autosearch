@@ -15,10 +15,14 @@ class ReadFile(base.SearchFile):
         self.sheetname = self.default_sheetname if sheetname == None else sheetname
         xl_file.open_file(path, data_only=True)
         xl_file.set_wb_sheet(sheetname)
-        value = None
+        check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
         try:
             value = xl_file.get_value(self.files[index_list]["coordinate"])
-            self.insert_data_response({"value": value, "path":path, "coordinate": self.files[index_list]["coordinate"]})
+            self.insert_data_response({"coordinate":self.files[index_list]["coordinate"],
+                                           "value": value,
+                                           "path": path,
+                                           "error": "" if check_merged == 0 else \
+                                                f"It is a warning, the cell is merged and the value is from the first cell of the merged cell: {check_merged}"})
         except Exception as e:
             self.insert_data_response({"value": "", "path":path, "coordinate": self.files[index_list]["coordinate"], "error": e})
 
@@ -28,19 +32,25 @@ class WriteFile(base.SearchFile):
         self.sheetname = None
     
     def proc_load_list(self, path, name_file, index_list, sheetname=None):
-        if is_coordinate_cell_valid(self.files[index_list]["coordinate"]) == False:
+        if is_coordinate_cell_valid(self.files[index_list]["coordinate"]) == 0:
             self.handle_invalid_ref(self.files[index_list])
             return 0
+    
         try:
             xl_file = OpenxlFiles(path)
             self.sheetname = self.default_sheetname if sheetname == None else sheetname
             xl_file.open_file(path)
             xl_file.set_wb_sheet(sheetname)
             check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
-            old_value = xl_file.get_value(self.files[index_list]["coordinate"]) if check_merged == 0 else check_merged
-            xl_file.update_value(self.files[index_list]["coordinate"], self.files[index_list]["value"]) if check_merged == 0 else check_merged
+            old_value = xl_file.get_value(self.files[index_list]["coordinate"]) if check_merged == 0 else xl_file.get_value(check_merged)
+            xl_file.update_value(self.files[index_list]["coordinate"], self.files[index_list]["value"]) \
+                if check_merged == 0 else xl_file.update_value(check_merged, self.files[index_list]["value"])
             try:
-                self.insert_data_response({"old_value": old_value, "coordinate":self.files[index_list]["coordinate"] if check_merged == 0 else check_merged, "value": self.files[index_list]["value"], "path":path})
+                self.insert_data_response({"old_value": old_value,
+                                           "coordinate":self.files[index_list]["coordinate"],
+                                           "value": self.files[index_list]["value"],
+                                           "path":path,
+                                           "error": "" if check_merged == 0 else f"It is a warning, the cell is merged and the value was written in the first cell of the merged cell: {check_merged}"})
                 xl_file.save_file(path)
                 xl_file.close_file()
                 return 1
@@ -51,11 +61,17 @@ class WriteFile(base.SearchFile):
                 return 0
 
         except AttributeError as e:
-            self.insert_data_response({"value": "", "path":path, "coordinate": self.files[index_list]["coordinate"], "error": "Merged Cell, not possible to write in this cell"})
+            self.insert_data_response({"value": "",
+                                       "path":path,
+                                       "coordinate": self.files[index_list]["coordinate"],
+                                       "error": "Merged Cell, not possible to write in this cell"})
             return 0
         
         except Exception as e:
-            self.insert_data_response({"value": "", "path":path, "coordinate": self.files[index_list]["coordinate"], "error": e})
+            self.insert_data_response({"value": "",
+                                        "path":path,
+                                        "coordinate": self.files[index_list]["coordinate"],
+                                        "error": e})
             return 0
         
 
