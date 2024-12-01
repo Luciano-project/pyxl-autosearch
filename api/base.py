@@ -33,7 +33,10 @@ class SearchFile(Setup):
         Check if file is in search list (in_search)
         '''
         for index_list, item in enumerate(in_search):
-            if self.search_in(item['filename'], name_file) and self.ignored_files_str(path)!=1:
+            if self.check_file_is_opened(path):
+                self.handle_file_blocked(item, path)
+
+            elif self.search_in(item['filename'], name_file) and self.ignored_files_str(path)!=1 and self.check_extension(name_file):
                 sheetname = item['sheetname'] if 'sheetname' in item else self.default_sheetname
                 self.proc_load_list(path, name_file, index_list, sheetname = sheetname)
                 self.remove_found(index_list)
@@ -61,14 +64,19 @@ class SearchFile(Setup):
                                 "coordinate": item["coordinate"],
                                 "value": item["value"] if "value" in item else "Not found",
                                 "path": "Not found",
-                                "error": "Filename: "+item["filename"]+" not found",
+                                "error": f"Filename: {item["filename"]} not found. Extensions expected: {self.extensions}",
                                 })
-            logger.error(f"File not found: {item['filename']} from the request:{item}")
+            logger.error(f"File not found: {item['filename']} from the request:{item}. Extensions expected: {self.extensions}")
         return 0
     
     def handle_invalid_ref(self, requested_item):
         self.insert_data_response({"error": f"Invalid reference: {requested_item['coordinate']}", **requested_item})
         logger.error(f"Invalid reference: {requested_item}")
+        return 1
+    
+    def handle_file_blocked(self, data_response, file_path:str):
+        self.insert_data_response({**data_response, "error": f"File is blocked: {file_path}"})
+        logger.error(f"File is blocked: {file_path}")
         return 1
 
     def insert_data_response(self, values:dict):
