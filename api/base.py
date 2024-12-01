@@ -35,6 +35,7 @@ class SearchFile(Setup):
         for index_list, item in enumerate(in_search):
             if self.check_file_is_opened(path):
                 self.handle_file_blocked(item, path)
+                self.remove_found(index_list)
 
             elif self.search_in(item['filename'], name_file) and self.ignored_files_str(path)!=1 and self.check_extension(name_file):
                 sheetname = item['sheetname'] if 'sheetname' in item else self.default_sheetname
