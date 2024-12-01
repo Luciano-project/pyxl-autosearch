@@ -11,3 +11,4 @@ class Setup:
         self.ignored_str = []
         self.default_sheetname = "test"
         self.default_savepath = os.getenv("DEFAULT_SAVEPATH")
+        self.extensions = [".xlsx", ".xls"]
