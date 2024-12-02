@@ -44,6 +44,11 @@ class OpenxlFiles():
             self.wb_file = None
             return -1
 
+    def is_sheetname_valid(self, sheet_name, wb_file):
+        if sheet_name in self.wb_file.sheetnames:
+            return 1
+        return 0
+
     def get_wb_sheet(self): return self.wb_sheet
     def set_wb_sheet(self, sheet_name): self.wb_sheet = self.wb_file[sheet_name]
 

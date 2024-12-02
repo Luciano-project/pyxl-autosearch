@@ -33,15 +33,27 @@ class SearchFile(Setup):
         Check if file is in search list (in_search)
         '''
         for index_list, item in enumerate(in_search):
-            if self.check_file_is_opened(path):
+            if self.is_valid_parameters(item) == 0:
+                self.handle_invalid_body_request(item)
+                self.remove_found(index_list)
+                self.check_path(name_file, path, in_search)
+
+            elif self.check_file_is_opened(path):
                 self.handle_file_blocked(item, path)
                 self.remove_found(index_list)
+                self.check_path(name_file, path, in_search)
 
             elif self.search_in(item['filename'], name_file) and self.ignored_files_str(path)!=1 and self.check_extension(name_file):
                 sheetname = item['sheetname'] if 'sheetname' in item else self.default_sheetname
                 self.proc_load_list(path, name_file, index_list, sheetname = sheetname)
                 self.remove_found(index_list)
                 self.check_path(name_file, path, in_search)
+
+
+    def is_valid_parameters(self, item:dict) -> int:
+        '''Check if parameters are valid
+        This method will be custimezed by the child class'''
+        return 1
 
     def proc_load_list(self, path, name_file, index_list, sheetname):
         """
@@ -58,6 +70,8 @@ class SearchFile(Setup):
         if re.search(f"{file_name}", haystack, re.IGNORECASE): return 1
         return 0
 
+
+# Handle errors
     def handle_not_found(self):
         '''Handle files not found'''
         for item in self.files:
@@ -75,10 +89,25 @@ class SearchFile(Setup):
         logger.error(f"Invalid reference: {requested_item}")
         return 1
     
-    def handle_file_blocked(self, data_response, file_path:str):
-        self.insert_data_response({**data_response, "error": f"File is blocked: {file_path}"})
+    def handle_file_blocked(self, requested_item, file_path:str):
+        self.insert_data_response({**requested_item, "error": f"File is blocked: {file_path}"})
         logger.error(f"File is blocked: {file_path}")
         return 1
+    
+    def handle_invalid_path(self, requested_item):
+        self.insert_data_response({ **requested_item, "error": f"Invalid path: {requested_item['path']}"})
+        logger.error(f"Invalid path: {requested_item['path']}")
+
+    def handle_invalid_sheetname(self, requested_item):
+        self.insert_data_response({"error": f"Sheetname not found: {requested_item['sheetname']}", **requested_item})
+        logger.error(f"Sheetname not found: {requested_item['sheetname']}")
+        return 1
+
+    def handle_invalid_body_request(self, requested_item):
+        self.insert_data_response({"error": f"Invalid body: {requested_item}", **requested_item})
+        logger.error(f"Invalid body: {requested_item}")
+        return 1
+#
 
     def insert_data_response(self, values:dict):
         '''insert data to the respose list'''
