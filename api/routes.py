@@ -1,14 +1,27 @@
 from flask import Flask, request, render_template
 from flask_cors import CORS
 from flask import make_response
+from flask_swagger_ui import get_swaggerui_blueprint
 from .views import *
 
 
 api = Flask(__name__)
 CORS(api, supports_credentials=True)
 
+# Swagger UI setup
+SWAGGER_URL = '/swagger'  # URL for exposing Swagger UI
+API_SPEC_URL = '/static/swagger.yaml'  # Path to your Swagger YAML file
+
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_SPEC_URL,
+    config={'app_name': "PYXL - API"}
+)
+api.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+#
+
 @api.route('/pyxl/write', methods=['PATCH'])
-def update():
+def write():
     if request.method == 'PATCH' :
         data = write_file(request.json)
         return make_response(data, 200)
@@ -21,6 +34,8 @@ def read():
         return make_response(data, 200)
     else: make_response("Not found", 404)
 
+
+# Frontend routes
 @api.route('/api')
 def index():
     return render_template('options.html')

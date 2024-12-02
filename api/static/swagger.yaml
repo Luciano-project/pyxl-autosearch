@@ -1,0 +1,173 @@
+openapi: 3.0.0
+info:
+  title: PYXL - Autoseach
+  description: API to change/read values from Excel files (extension accepted:xlsx, xlsm) in a fast and easy way.
+  version: "1.0.0"
+paths:
+  /pyxl/read:
+    post:
+      summary: Reads and performs an action based on input parameters.
+      parameters:
+        - in: query
+          name: filename
+          schema:
+            type: string
+          required: true
+          description: The filename to search in the setted path (config.py).
+        - in: query
+          name: coordinate
+          schema:
+            type: string
+          required: true
+          description: The location of the sheet, using the Excel's references (A1, B2, etc.).
+        - in: query
+          name: sheetname
+          schema:
+            type: string
+          required: false
+          description: It is optional in the body, you can set the sheetname to access or set one as default in config.py.
+          
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required: 
+                  - filename
+                  - coordinate
+                properties:
+                  filename:
+                    type: string
+                    description: The name of the file to search.
+                  coordinate:
+                    type: string
+                    description: The location of the cell, using Excel's references (e.g., E4).
+                  sheetname:
+                    type: string
+                    description: The sheet name to work inside the Excel file. (Optional).
+      responses:
+        "200":
+          description: Action performed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    coordinate:
+                      type: string
+                      description: The coordinate in the Excel file where the action was performed (e.g., B4).
+                    error:
+                      type: string
+                      description: Error message, if any. Empty string if no error occurred.
+                    path:
+                      type: string
+                      description: The full path of the Excel file found.
+                    value:
+                      type: string
+                      description: The value of the cell after the action. Can be `null` if not applicable.
+                    filename:
+                      type: string
+                      description: The name of the file to search.
+
+  /pyxl/write:
+    patch:
+      summary: Modifies a resource based on input parameters.
+      parameters:
+        - in: query
+          name: filename
+          schema:
+            type: string
+          required: true
+          description: The filename to search in the setted path (config.py).
+        - in: query
+          name: coordinate
+          schema:
+            type: string
+          required: true
+          description: The location of the sheet, using the Excel's references (A1, B2, etc.).
+        - in: query
+          name: sheetname
+          schema:
+            type: string
+          required: false
+          description: Optional in the body, you can set the sheetname to access or set one as default in config.py.
+        - in: query
+          name: value
+          schema:
+            type: string
+          required: true
+          description: Value to insert in the cell.
+        - in: query
+          name: savepath
+          schema:
+            type: string
+          required: false
+          description: Optional in the body, path to save the file after the action.
+          
+          
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required: 
+                  - filename
+                  - coordinate
+                  - value
+                properties:
+                  filename:
+                    type: string
+                    description: The name of the file to search.
+                  coordinate:
+                    type: string
+                    description: The location of the cell, using Excel's references (e.g., E4).
+                  sheetname:
+                    type: string
+                    description: Optional in the body, the sheetname to work inside the Excel file.
+                  value:
+                    type: string
+                    description: The value to insert in the cell.
+                  savepath:
+                    type: string
+                    description: Optional in the body, path to save the file after the action.
+                  
+      responses:
+        "200":
+          description: Action performed successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    coordinate:
+                      type: string
+                      description: The coordinate in the Excel file where the action was performed (e.g., B4).
+                    filename:
+                      type: string
+                      description: The name of the file to search.
+                    error:
+                      type: string
+                      description: Error message, if any. Empty string if no error occurred.
+                    path:
+                      type: string
+                      description: The full path of the Excel file found.
+                    value:
+                      type: string
+                      nullable: true
+                      description: The value of the cell after the action. Can be `null` if not applicable.
+                    savepath:
+                      type: string
+                      description: The path where the file was saved after the action.
+                    old_value:
+                      type: string
+                      description: The value of the cell before the action. Can be `null` if not applicable.
