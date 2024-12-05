@@ -8,7 +8,7 @@ class Setup:
     def __init__(self):
         self.path = os.getenv("SEARCH_PATH")
         self.base_str_find = [] # STRINGS MUST BE INCLUDED IN NAME FILE
-        self.ignored_str = []
+        self.ignored_str = [] # STRINGS MUST BE IGNORED IN NAME FILE
         self.default_sheetname = "test"
         self.default_savepath = os.getenv("DEFAULT_SAVEPATH")
-        self.extensions = [".xlsx", ".xls"]
+        self.extensions = [".xlsx", ".xlsm"]
