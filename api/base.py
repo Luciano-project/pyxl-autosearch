@@ -79,7 +79,7 @@ class SearchFile(Setup):
                                 "coordinate": item["coordinate"],
                                 "value": item["value"] if "value" in item else "Not found",
                                 "path": "Not found",
-                                "error": f"Filename: {item["filename"]} not found. Extensions expected: {self.extensions}",
+                                "error": f"Filename: {item["filename"]} not found. Extensions expected: {self.extensions}, also check the path of search.",
                                 })
             logger.error(f"File not found: {item['filename']} from the request:{item}. Extensions expected: {self.extensions}")
         return 0
