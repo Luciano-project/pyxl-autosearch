@@ -1,0 +1,11 @@
+{% extends "shared/base.html" %}
+{% block content %}
+<div align="center">
+    <h4>Choose your service:</h4>
+    <div class="d-flex justify-content-center">
+        <a type="button" class="btn btn-secondary m-2" href="/api/read" data-toggle="tab">Read value</a>
+        <a type="button" class="btn btn-secondary m-2" href="/api/write" data-toggle="tab">Write value</a>
+    </div>
+</div>
+
+{% endblock %}
