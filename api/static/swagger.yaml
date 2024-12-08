@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   title: PYXL - Autoseach
-  description: API to change/read values from Excel files (extension accepted:xlsx, xlsm) in a fast and easy way.
-  version: "1.0.0"
+  description: API to change/read values from Excel files (accepted file extensions:xlsx, xlsm) quickly and easily.
+  version: "0.5.0"
 paths:
   /pyxl/read:
     post:
@@ -66,7 +66,7 @@ paths:
                       description: Error message, if any. Empty string if no error occurred.
                     path:
                       type: string
-                      description: The full path of the Excel file found.
+                      description: The absolute path of the Excel file found.
                     value:
                       type: string
                       description: The value of the cell after the action. Can be `null` if not applicable.
@@ -107,7 +107,7 @@ paths:
           schema:
             type: string
           required: false
-          description: Optional in the body, path to save the file after the action.
+          description: Optional in the body, absolute path to save the file after the action.
           
           
       requestBody:
@@ -137,7 +137,7 @@ paths:
                     description: The value to insert in the cell.
                   savepath:
                     type: string
-                    description: Optional in the body, path to save the file after the action.
+                    description: Optional in the body, absolute path to save the file after the action.
                   
       responses:
         "200":
@@ -167,7 +167,7 @@ paths:
                       description: The value of the cell after the action. Can be `null` if not applicable.
                     savepath:
                       type: string
-                      description: The path where the file was saved after the action.
+                      description: The absolute path where the file was saved after the action.
                     old_value:
                       type: string
                       description: The value of the cell before the action. Can be `null` if not applicable.
