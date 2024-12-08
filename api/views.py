@@ -57,7 +57,7 @@ class WriteFile(base.SearchFile):
                 return 0
             
             self.sheetname = self.default_sheetname if sheetname == None else sheetname
-            xl_file.open_file(path)
+            xl_file.open_file(path, data_only=True)
 
             if xl_file.is_sheetname_valid(sheetname, xl_file) == 0:
                 self.handle_invalid_sheetname(self.files[index_list])
@@ -66,8 +66,8 @@ class WriteFile(base.SearchFile):
             xl_file.set_wb_sheet(sheetname)
             check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
             old_value = xl_file.get_value(self.files[index_list]["coordinate"]) if check_merged == 0 else xl_file.get_value(check_merged)
-            xl_file.update_value(self.files[index_list]["coordinate"], self.files[index_list]["value"]) \
-                if check_merged == 0 else xl_file.update_value(check_merged, self.files[index_list]["value"])
+            xl_file.update_value(self.files[index_list]["coordinate"], self.files[index_list]["value"]) if check_merged == 0 else xl_file.update_value(check_merged, self.files[index_list]["value"])
+            
             try:
                 self.insert_data_response({**self.files[index_list],
                                            "path": path,
@@ -75,7 +75,9 @@ class WriteFile(base.SearchFile):
                                            "error": "" if check_merged == 0 else f"It is a warning, the cell is merged and the value was written in the first cell of the merged cell: {check_merged}"})
                 is_requested_savepath = 1 if self.files[index_list]["savepath"] else 0
                 
-                xl_file.save_file(path if is_requested_savepath == 0 else f"{self.files[index_list]["savepath"]}\\{name_file}")
+                to_savepath = self.check_savepath_and_return_if_valid(self.files[index_list])
+                if to_savepath == -1: raise Exception("Savepath is invalid") if to_savepath == 0 else None
+                xl_file.save_file(path if to_savepath == 0 else fr"{to_savepath}\{name_file}")
                 xl_file.close_file()
                 return 1
             
@@ -83,7 +85,7 @@ class WriteFile(base.SearchFile):
                 self.insert_data_response({**self.files[index_list],
                                            "path": path,
                                            "old_value": old_value,
-                                           "error": f"Trying to write data and {e}"})
+                                           "error": f"Error when trying to write data: {e}"})
                 xl_file.close_file()
                 return 0
 
