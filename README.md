@@ -1,23 +1,33 @@
 
 # PYXL - Autosearch
 
-[https://img.shields.io/badge/Python-3.10-blue](https://img.shields.io/badge/Python-3.10-blue)
 
-[https://img.shields.io/badge/Flask-3.0.0-green](https://img.shields.io/badge/Flask-3.0.0-green)
+![Python](https://img.shields.io/badge/Python-3.10-blue) ![Flask](https://img.shields.io/badge/Flask-3.0.0-green) ![MIT](https://img.shields.io/badge/License-MIT-yellow)
 
-[https://img.shields.io/badge/License-MIT-yellow](https://img.shields.io/badge/License-MIT-yellow)
 
-PYXL is very powerful tool to use in the office for automate extraction or read tasks from Excel files.
+PYXL - Autosearch (or just PYXL) is very powerful tool that can be used for automate the extraction or update tasks from Excel files. In the core of this project, Python was used then to create the algorithms and the API to handle the users request.
 
-The objective of this API is help to automate the search, extract and read Excel files in a simple and efficient way. You don’t need the Microsoft Office Excel installed to use this. The accepted extensions are *.xlsx* and *.xslm*.
+The objective of this API is automate the search, extract and read for Excel files in a simple and efficient way. You don’t need the Microsoft Office Excel installed to use this and the accepted extensions are *.xlsx* and *.xslm*.
+
+---
+
+PYXL Interface web
+
+<div align="center">
+    
+https://github.com/user-attachments/assets/84c41062-0e07-4e15-82f7-1e29dc9d9d32
+
+</div>
 
 ---
 
 # Use cases
 
-It was designed to solve one of the challenges that I faced working with backoffice functions, I learned common administrative processes and I saw many possibilities of automate work to save time. The problem to solved this time: “Read and update Excel files with specified references”, it is kind of incisive automation process. The source of data updated to was databases or another files.
+It was designed to solve one of the challenges that I faced working with backoffice functions, I learned common administrative processes and I saw many possibilities of automate work to save time. The problem to solved this time: “Read and update Excel files with specified references”, it is kind of incisive automation process. The source of data, updated to, is databases and another files.
 
 You can use it as a service from the api or use the friendly web interface to input the necessary data and for the actions that it must perform. 
+
+![PYXL - Flow](https://github.com/user-attachments/assets/7a1288c4-8634-4974-aa68-42d92a27d673)
 
 ## Use & Limitations:
 
@@ -27,12 +37,7 @@ You can use it as a service from the api or use the friendly web interface to in
 - It is stateless and don’t have a database connected on it.
 - No login is required to use.
 - It just read the value from the cells, if it is formula it will bring just result.
-
----
-
-A summary of the web interface application
-
-[presentation openpyxl web interface.mp4](presentation_openpyxl_web_interface.mp4)
+- The extensions files allowed to work with is: *xlsx* and *xlsm*.
 
 ---
 
@@ -43,6 +48,7 @@ A summary of the web interface application
 - Python 3.10.0 or higher
 - *pip* installed, as Python packages manager
 - Optional: Git (to clone the repository)
+
 
 ### Download the PYXL:
 
@@ -59,18 +65,35 @@ You have 2 ways to do it: Clone the repository or Download the *.zip* file.
 
 1. **DOWNLOAD:**
     
-    You  can [click here](https://github.com) to go download directly from the GitHub’s repository.
+    You can [click here](https://github.com/Luciano-project/pyxl-autosearch/archive/refs/heads/master.zip) to go download directly from the GitHub’s repository.
     
 
 ### Install the dependencies:
+---
 
+### *pyxl.bat*
+- If you use Windows, the many following processes, can be automated by a double click on *pyxl.bat*, in the main root of the project. It will prepare all the environment (if it is the first use) and will start the web server. The script basically do:
+
+  The first time:
+    *  Create virtual enviroment named "*venv*"
+    *  Active environment and install the dependences
+    *  Create the directory for the sample
+    *  Create a sample named *test.xlsx* at, the relative path:"*pyxl-autosearch\example\default_search*"
+
+  After:
+    * Activate the virtualenvironment
+    * Start the web server
+ 
+    * 
+---
 After download the project, go to it’s directory and open a terminal window. 
 
 ```bash
 cd pyxl-autosearch
 ```
 
-Creation of a virtual environment (venv) is recommended before install the dependencies of the project. You can create, active and install by use the following code:
+
+Creation of a virtual environment *(venv)* is recommended before install the dependencies of the project. Once you create it, active and install by use the following code:
 
 ```bash
 python -m venv venv # Create the virtual environment
@@ -84,15 +107,15 @@ pip install -r requirements.txt # Install the required dependencies
 
 ---
 
+
 # How to configure for the first use?
 
-**How to configure for the first use?**
-
-- First, you need to create a environment file (*.env*), in the root of the project, it will have the path to search and to save the files as default. Your file should be like:
+- First, you need to create a environment file (*.env*) in the root of the project, it will have the path to search and to save the files as default. Your file should be like:
 
 ```
 SEARCH_PATH=your/absolute/path/to/search
-DEFAULT_SAVEPATH=your/absolute/path/to/save 
+DEFAULT_SAVEPATH=your/absolute/path/to/save
+DEBUG=True # You should change this for production
 ```
 
 - There are some settings that you can set at *configs/settings.py*:
@@ -111,10 +134,10 @@ DEFAULT_SAVEPATH=your/absolute/path/to/save
 
 ---
 
+
 # How to use
 
 After set the configurations you are ready to run the Api.
-
 1. To start the api, assuming you are in the root of the project, run the command:
     
     ```bash
@@ -125,7 +148,7 @@ After set the configurations you are ready to run the Api.
 
 Now you can choose how to interact with the application by 2 ways, endpoints and using a frontend interface:
 
-### **ENDPOINTS (technical way)**:
+### **ENDPOINTS (for developers)**:
 
 1. To read data: *localhost:5000/pyxl/read*
     1. You must send a POST request with a list, in the body, of *json* objects. Valid cases:
@@ -145,7 +168,7 @@ Now you can choose how to interact with the application by 2 ways, endpoints and
         ```
         
 2. To write data: *localhost:5000/pyxl/write*
-    1. You must send a PATCH request with a list, in the body, of *json* objects. This require one more parameter (*value*) and accept one more optional parameter (*savepath*) :
+    1. You must send a *PATCH* request with a list, in the body, of *json* objects. This require one more parameter (*value*) and accept one more optional parameter (*savepath*) :
         
         ```json
         [
@@ -176,34 +199,43 @@ Now you can choose how to interact with the application by 2 ways, endpoints and
         ]
         ```
         
-    
+---
+
 
 ### **FRONTEND INTERFACE (Easy way):**
 
 You can set a list of objects via web interface and you can choose to write or read values at *localhost:5000/api.*
+* It was made using HTML, Bootstrap, JavaScript, Ajax,
 
-- This part was developed to make the non-developers to use easily, here there are some screens of the interfaces where can input the data to process:
+- This part was developed to make the non-developers to use easily, here there are some screens of the interfaces where the user can input the data:
     - *localhost:5000/api*
         
-        ![Captura de ecrã 2024-12-05 164848.png](Captura_de_ecr_2024-12-05_164848.png)
-        
+        ![endpoint_api](https://github.com/user-attachments/assets/ab663029-242b-4ff1-85c1-05bbe71f832d)
     
     - *localhost:5000/api/read*
-        
-        ![Captura de ecrã 2024-12-03 164542.png](Captura_de_ecr_2024-12-03_164542.png)
+
+        ![endpoint_api_read](https://github.com/user-attachments/assets/b60b384e-3c6d-4762-8def-730c38245c21)
         
     - *localhost:5000/api/write*
-        
-        ![Captura de ecrã 2024-12-05 164824.png](Captura_de_ecr_2024-12-05_164824.png)
-        
+
+        ![endpoint_api_write](https://github.com/user-attachments/assets/6b259fc9-92ad-4a32-b21b-d5fb5fedafda)
 
 ---
+
 
 # Documentation
 
 If you want to know more information about, please check the available documentation via Swagger at [*localhost:5000/swagger*](http://localhost:5000/swagger). You will find more detailed specifications about the request and response there.
 
+
+![docs_swagger_read](https://github.com/user-attachments/assets/55ed7950-c3be-44b6-ae60-18d3a7012db9)
+
+
+![docs_swagger_write](https://github.com/user-attachments/assets/b25f3f6a-491d-41bc-8851-c5d8d7e07c31)
+
+
 ---
+
 
 # Tests
 
@@ -211,11 +243,13 @@ The unity tests are under development and will be available soon.
 
 ---
 
+
 # Contributions
 
 This project is **open source** and welcomes contributions from the community.
 
 I will be grateful to everyone who has provided ideas, fixes, feedback, and improvements.
+
 
 ### Want to contribute?
 
@@ -223,11 +257,13 @@ I will be grateful to everyone who has provided ideas, fixes, feedback, and impr
 2. Clone this repository to your local machine
 3. Create a new branch for your changes
 
+
 ### **Making Changes.**
 
 1. Add your changes
 2. Run tests (if applicable)
 3. Commit your changes with a clear and descriptive commit message
+
 
 ### **Submitting a Pull Request.**
 
@@ -235,11 +271,13 @@ I will be grateful to everyone who has provided ideas, fixes, feedback, and impr
 2. Open a Pull Request and include a clear and descriptive title and explanation of your changes
 3. I will review and merge your changes
 
+
 ---
+
 
 # Tools and Resources Used
 
-This project was made possible thanks to the following technologies and libraries:
+The following technologies and libraries were used to build the application:
 
 - **Python**
 - **Flask**
@@ -249,15 +287,19 @@ This project was made possible thanks to the following technologies and librarie
 - **Ajax**
 - **Bootstrap**
 
+
 ---
+
 
 # 📋 Credits
 
 This project was carefully developed by:
 
-- Luciano-project, Software Developer Committed to delivering efficient and accessible solutions to the community.
+- Luciano Sousa, Software Developer, Committed to delivering efficient and accessible solutions to the community.
+
 
 ---
+
 
 # License
 
