@@ -38,3 +38,7 @@ coverage.xml
 # Other files
 *.pywz
 *.pyc
+example/*
+
+# Tests
+test/*
