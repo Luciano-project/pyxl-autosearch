@@ -69,8 +69,8 @@ You have 2 ways to do it: Clone the repository or Download the *.zip* file.
     
 
 ### Install the dependencies:
----
 
+---
 ### *pyxl.bat*
 - If you use Windows, the many following processes, can be automated by a double click on *pyxl.bat*, in the main root of the project. It will prepare all the environment (if it is the first use) and will start the web server. The script basically do:
 
@@ -82,10 +82,9 @@ You have 2 ways to do it: Clone the repository or Download the *.zip* file.
 
   After:
     * Activate the virtualenvironment
-    * Start the web server
- 
-    * 
+    * Start the web server 
 ---
+
 After download the project, go to it’s directory and open a terminal window. 
 
 ```bash
