@@ -12,7 +12,7 @@ def is_savepath_exists(body_request:dict) -> int:
     try:
         is_requested_filepath_in_body = is_required_data_in_request(body_request, "savepath")
         if is_requested_filepath_in_body == 0: return 1
-        if os.path.exists(fr"{body_request["savepath"]}"): return 1
+        if os.path.exists(fr"{body_request['savepath']}"): return 1
     except Exception as e:
         return -1
     return 0
