@@ -76,5 +76,4 @@ def start_app():
     create_xl_sample()
 
 
-    if __name__ == "__main__":
-        start_app()
+start_app()

@@ -8,10 +8,10 @@ def setup_environment():
         subprocess.run("python -m venv venv", shell=True)
     
     if sys.platform == "win32":
-        subprocess.run("venv/Scripts/activate && pip install -r requirements.txt && python pyxl_start.py", shell=True)
+        subprocess.run("venv\\Scripts\\activate && pip install -r requirements.txt && python pyxl_start.py", shell=True)
+        return
         
-    else:
-        subprocess.run("source venv/bin/activate && pip install -r requirements.txt && python pyxl_start.py", shell=True)
+    subprocess.run("source venv/bin/activate && pip install -r requirements.txt && python pyxl_start.py", shell=True)
 
 if __name__ == "__main__":
     setup_environment()
