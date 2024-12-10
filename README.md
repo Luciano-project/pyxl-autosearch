@@ -70,26 +70,40 @@ You have 2 ways to do it: Clone the repository or Download the *.zip* file.
 
 ### Install the dependencies:
 
----
-### *pyxl.bat*
-- If you use Windows, the many following processes, can be automated by a double click on *pyxl.bat*, in the main root of the project. It will prepare all the environment (if it is the first use) and will start the web server. The script basically do:
-
-  The first time:
-    *  Create virtual enviroment named "*venv*"
-    *  Active environment and install the dependences
-    *  Create the directory for the sample
-    *  Create a sample named *test.xlsx* at, the relative path:"*pyxl-autosearch\example\default_search*"
-
-  After:
-    * Activate the virtualenvironment
-    * Start the web server 
----
-
 After download the project, go to it’s directory and open a terminal window. 
 
 ```bash
 cd pyxl-autosearch
 ```
+---
+### Make it easy!!
+If you use Windows or Linux, the many following processes, can be automated by run the script *configure.py*.
+***Just make sure that you are at the root of the project before continue.*
+* Windows:
+    ```shell
+    python configure.py
+    ```
+* Linux:
+    **Before run the python file, make sure that you have installed:
+    ```bash
+        apt install python3.10-venv
+    ```
+    and then:
+    ```bash
+    python3 configure.py
+    ```
+
+It will prepare all the environment, the script do:
+
+  The first time:
+    *  Create virtual enviroment named "*venv*"
+    *  Active environment and install the dependences
+    *  Create the directory for the sample
+    *  Create a sample named *test.xlsx* at, the relative path:"*pyxl-autosearch/example/default_search/test.xlsx*"
+
+Now all the configuration you need, until the section *"How to use?"*, for the first use is done.
+
+---
 
 
 Creation of a virtual environment *(venv)* is recommended before install the dependencies of the project. Once you create it, active and install by use the following code:
