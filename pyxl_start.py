@@ -63,22 +63,17 @@ def create_xl_sample():
 
     wb.save("example/default_search/test.xlsx")
 
-    def create_env_file():
-        with open(".env", "w") as file:
-            file.write("DEFAULT_SAVEPATH=exemple/default_savepath")
-            file.write("\n")
-            file.write("SEARCH_PATH=exemple/default_search")
-            file.write("\n")
-            file.write("SECRET_KEY=''")
+def create_env_file():
+    with open(".env", "w") as file:
+        file.write("DEFAULT_SAVEPATH=example/default_savepath\n")
+        file.write("SEARCH_PATH=example/default_search\n")
+        file.write("SECRET_KEY=''\n")
+        file.write("DEBUG=True\n")
 
 
-    def start_app():
-        create_env_file()
-        print("\n\tEnv file was created!")
-        print("\tCreating a sample:\n")
-        create_xl_sample()
-        print("\t\tSample created!\n")
-        print("\t\tEverything is ready!\n")
+def start_app():
+    create_env_file()
+    create_xl_sample()
 
 
     if __name__ == "__main__":
