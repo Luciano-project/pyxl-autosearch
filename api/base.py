@@ -79,21 +79,21 @@ class SearchFile(Setup):
                                 "coordinate": item["coordinate"],
                                 "value": item["value"] if "value" in item else "Not found",
                                 "path": "Not found",
-                                "error": f"Filename: {item["filename"]} not found. Extensions expected: {self.extensions}, also check the path of search.",
+                                "error": f"Filename: {item['filename']} not found. Extensions expected: {self.extensions}, also check the path of search.",
                                 })
             logger.error(f"File not found: {item['filename']} from the request:{item}. Extensions expected: {self.extensions}")
         return 0
-    
+
     def handle_invalid_ref(self, requested_item):
         self.insert_data_response({"error": f"Invalid reference: {requested_item['coordinate']}", **requested_item})
         logger.error(f"Invalid reference: {requested_item}")
         return 1
-    
+
     def handle_file_blocked(self, requested_item, file_path:str):
         self.insert_data_response({**requested_item, "error": f"File is blocked: {file_path}"})
         logger.error(f"File is blocked: {file_path}")
         return 1
-    
+
     def handle_invalid_path(self, requested_item):
         self.insert_data_response({ **requested_item, "error": f"Invalid path: {requested_item['path']}"})
         logger.error(f"Invalid path: {requested_item['path']}")
@@ -118,14 +118,14 @@ class SearchFile(Setup):
         for ext in self.extensions:
             if file_name.endswith(ext): return 1
         return 0
-    
+
     def check_merged_cell(self, coordinate:str, ws_obj:object) -> int | str:
         '''Check if cell is merged and return the first cell of the merged cell'''
         from openpyxl.worksheet.cell_range import CellRange
         try:
             for merged_range in ws_obj.merged_cells.ranges:
                 if coordinate in CellRange(str(merged_range)):
-                    return str(merged_range).split(":")[0]  
+                    return str(merged_range).split(":")[0]
             return 0
 
         except Exception as e:
