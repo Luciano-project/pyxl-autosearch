@@ -75,7 +75,7 @@ class WriteFile(base.SearchFile):
                 
                 to_savepath = self.check_savepath_and_return_if_valid(self.files[index_list])
                 if to_savepath == -1: raise Exception("Savepath is invalid") if to_savepath == 0 else None
-                xl_file.save_file(path if to_savepath == 0 else fr"{to_savepath}\{name_file}")
+                xl_file.save_file(path if to_savepath == 0 else f"{to_savepath}\\{name_file}")
                 xl_file.close_file()
                 return 1
             
