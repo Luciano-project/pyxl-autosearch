@@ -1,5 +1,6 @@
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, Border, Side, PatternFill
+from datetime import datetime
 
 def create_xl_sample(): 
     # Criar um novo Workbook
@@ -24,7 +25,7 @@ def create_xl_sample():
     info_data = [
         ("NUMBER DOC.:", "00001", "CLIENT:", "CLIENT NAME", "RESPONSABILITY OF:", "NAME"),
         ("PART NUMBER:", "1 123 456 789", "CLIENT VERSION:", "V01", "APROVED BY:", "ENGINEER"),
-        ("DESCRIPTION:", "DESCRIPTION PART NUMBER", "INTERNAL VERSION:", "V02", "DATE:", "05/12/2024"),
+        ("DESCRIPTION:", "DESCRIPTION P.NUMBER", "INTERNAL VERSION:", "V02", "UPDATE:", f"{datetime.today().strftime('%d/%m/%Y')}"),
     ]
 
     # Column styles
@@ -38,7 +39,7 @@ def create_xl_sample():
                 cell.font = bold_font
 
     # Titles
-    column_headers = ["Column1", "Column2", "Column3", "Column4", "Column5", "Column6"]
+    column_headers = ["Component","Description","Supplier","Amount","Stock","Price"]
     for col_idx, col_name in enumerate(column_headers, start=1):
         cell = ws.cell(row=5, column=col_idx, value=col_name)
         cell.font = bold_font
@@ -47,8 +48,23 @@ def create_xl_sample():
         cell.border = border
 
     # Datatable
-    data_rows = [
+    """data_rows = [
         [f"data_column{i}.{j}" for i in range(1, 7)] for j in range(1, 13)
+    ]"""
+
+    data_rows = [
+        ["120001","Connector 1","Supplier A","10","50","1,24"],
+        ["120002","Connector 2","Supplier A","11","50","1,35"],
+        ["120003","Connector 3","Supplier A","12","50","1,11"],
+        ["120004","Connector 4","Supplier A","13","50","1,4"],
+        ["120005","Connector 5","Supplier B","14","50","0,32"],
+        ["120006","Connector 6","Supplier B","15","50","1,1"],
+        ["120007","Connector 7","Supplier B","16","50","0,13"],
+        ["120008","Connector 8","Supplier B","17","50","0,15"],
+        ["120009","Connector 9","Supplier C","18","50","0,1"],
+        ["120010","Connector 10","Supplier C","19","50","0,9"],
+        ["120011","Connector 11","Supplier C","20","50","1,2"],
+        ["120012","Connector 12","Supplier C","21","50","2"],
     ]
 
     for row_idx, row_data in enumerate(data_rows, start=6):
