@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_cors import CORS
 from flask import make_response
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -36,6 +36,10 @@ def read():
 
 
 # Frontend routes
+@api.route('/')
+def home():
+    return redirect('/api')
+
 @api.route('/api')
 def index():
     return render_template('options.html')
