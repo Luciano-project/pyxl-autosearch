@@ -26,7 +26,7 @@ class ReadFile(base.SearchFile):
         return xl_file
 
     def proc_load_list(self, path, name_file, index_list, sheetname=None):
-        if self.check_valid_cell(index_list): return 0
+        if not self.check_valid_cell(index_list): return 0
         
         xl_file = self.check_valid_file(path, sheetname, index_list)
         check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
