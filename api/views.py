@@ -7,11 +7,14 @@ class ReadFile(base.SearchFile):
         super().__init__(files)
         self.sheetname = None
 
-    def proc_load_list(self, path, name_file, index_list, sheetname=None):
+
+    def check_valid_cell(self, index_list): 
         if is_coordinate_cell_valid(self.files[index_list]["coordinate"]) == False:
             self.handle_invalid_ref(self.files[index_list])
             return 0
-        
+        return 1
+
+    def check_valid_file(self, path, sheetname, index_list):
         xl_file = OpenxlFiles(path)
         xl_file.open_file(path, data_only=True)
         if xl_file.is_sheetname_valid(sheetname, xl_file) == 0:
@@ -20,6 +23,12 @@ class ReadFile(base.SearchFile):
         
         self.sheetname = self.default_sheetname if sheetname == None else sheetname
         xl_file.set_wb_sheet(sheetname)
+        return xl_file
+
+    def proc_load_list(self, path, name_file, index_list, sheetname=None):
+        if self.check_valid_cell(index_list): return 0
+        
+        xl_file = self.check_valid_file(path, sheetname, index_list)
         check_merged = self.check_merged_cell(self.files[index_list]["coordinate"], xl_file.get_wb_sheet())
         try:
             value = xl_file.get_value(self.files[index_list]["coordinate"]) if check_merged == 0 else xl_file.get_value(check_merged)
