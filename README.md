@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue) ![Flask](https://img.shields.io/badge/Flask-3.0.0-green) ![MIT](https://img.shields.io/badge/License-MIT-yellow)
 
 
-PYXL - Autosearch (or just PYXL) is very powerful tool that can be used for automate the extraction or update tasks from Excel files. In the core of this project, Python was used then to create the algorithms and the API to handle the users request.
+PYXL - Autosearch (or just PYXL) is very powerful tool that can be used for automate the extraction or update tasks from Excel files. In the core of this project, Python was used to create the algorithms and the API to handle the users request.
 
 The objective of this API is automate the search, extract and read for Excel files in a simple and efficient way. You don’t need the Microsoft Office Excel installed to use this and the accepted extensions are *.xlsx* and *.xslm*.
 
