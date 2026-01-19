@@ -1,0 +1,93 @@
+{% extends "shared/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h3 class="text-center mb-3">Sign in</h3>
+
+        {# Error vindo do backend (render_template(..., error="...")) #}
+        {% if error %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+
+        {# Flash messages (recomendado) #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form
+          method="POST"
+          action="{{ url_for('login', next=request.args.get('next')) }}"
+          novalidate
+        >
+          {# Se usares Flask-WTF, isto renderiza CSRF token #}
+          {% if form is defined and form.csrf_token is defined %}
+            {{ form.csrf_token }}
+          {% endif %}
+
+          {# Guarda o next também no POST (para ser robusto) #}
+          <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username or Email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              autocomplete="username"
+              required
+              autofocus
+              value="{{ request.form.get('username', '') if request.method == 'POST' else '' }}"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="1"
+                id="remember"
+                name="remember"
+                {% if request.method == 'POST' and request.form.get('remember') == '1' %}checked{% endif %}
+              >
+              <label class="form-check-label" for="remember">
+                Remember me
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Nota: este script estava incompleto (apiRes não existe). Se não precisares, remove. #}
+{% endblock %}

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv("../.env")
 
+API_KEY = os.getenv("API_KEY")
 class Setup:
     def __init__(self):
         self.path = os.getenv("SEARCH_PATH")

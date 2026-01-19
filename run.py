@@ -13,3 +13,10 @@ if __name__ == '__main__':
         print("\n\tProductions server initalized on: http://localhost:5000")
         serve(api, host='0.0.0.0', port=5000)
 
+    with api.app_context():
+        u = User.query.filter_by(username="admin").first()
+        if u and u.check_password("admin123"):
+            print("Login OK")
+        else:
+            print("Credenciais inválidas")
+
